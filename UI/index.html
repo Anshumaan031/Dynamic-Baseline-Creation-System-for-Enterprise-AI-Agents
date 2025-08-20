@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Control Tower - Dynamic Baseline Creation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <h1>AI Control Tower</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#demo" class="nav-link">Demo</a>
+                    <a href="#framework" class="nav-link">Framework</a>
+                    <a href="#api" class="nav-link">API</a>
+                    <a href="/docs" target="_blank" class="nav-link">Docs</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Dynamic Baseline Creation for AI Agents</h2>
+                <p class="hero-subtitle">
+                    Analyze agent documentation and automatically generate context-aware performance baselines 
+                    using our ReAct-powered AI Control Tower system.
+                </p>
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-brain"></i>
+                        <span>Intelligent Analysis</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dynamic Baselines</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-cogs"></i>
+                        <span>Context-Aware</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-play-circle"></i>
+                Try the Demo
+            </h2>
+            
+            <div class="demo-grid">
+                <!-- Input Form -->
+                <div class="input-panel">
+                    <h3><i class="fas fa-edit"></i> Input Configuration</h3>
+                    
+                    <form id="baseline-form">
+                        <div class="form-group">
+                            <label for="user-query">
+                                <i class="fas fa-question-circle"></i>
+                                User Query
+                            </label>
+                            <textarea 
+                                id="user-query" 
+                                name="user_query" 
+                                placeholder="Describe what kind of baseline analysis you need..."
+                                required
+                            >Create baseline metrics for a customer service agent handling technical support</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="document-content">
+                                <i class="fas fa-file-alt"></i>
+                                Agent Documentation
+                            </label>
+                            <textarea 
+                                id="document-content" 
+                                name="document_content" 
+                                placeholder="Paste your agent documentation here..."
+                                required
+                            >Customer Service Agent Specification:
+- Handles technical support for cloud services
+- Uses knowledge base, ticketing system, and escalation tools  
+- Expected to resolve 75% of issues on first contact
+- Domain: Mature cloud service support with well-established processes
+- Task complexity: Mix of simple account issues and complex technical problems
+- Performance targets: <15% escalation rate, >70% CSAT</textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="analyze-btn">
+                                <i class="fas fa-rocket"></i>
+                                Generate Baselines
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="clear-btn">
+                                <i class="fas fa-eraser"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Loading State -->
+                    <div id="loading-state" class="loading-state" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing documentation and generating baselines...</p>
+                        <div class="progress-steps">
+                            <div class="step" id="step-1">
+                                <i class="fas fa-search"></i>
+                                <span>Document Analysis</span>
+                            </div>
+                            <div class="step" id="step-2">
+                                <i class="fas fa-calculator"></i>
+                                <span>Baseline Calculation</span>
+                            </div>
+                            <div class="step" id="step-3">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Insights Generation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="results-panel">
+                    <h3><i class="fas fa-chart-line"></i> Analysis Results</h3>
+                    
+                    <!-- Welcome State -->
+                    <div id="welcome-state" class="welcome-state">
+                        <div class="welcome-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h4>Ready for Analysis</h4>
+                        <p>Enter your agent documentation and query to generate dynamic baselines.</p>
+                        <div class="sample-queries">
+                            <h5>Sample Queries:</h5>
+                            <div class="sample-query" onclick="loadSample('customer-service')">
+                                <i class="fas fa-headset"></i>
+                                Customer Service Agent
+                            </div>
+                            <div class="sample-query" onclick="loadSample('research-agent')">
+                                <i class="fas fa-microscope"></i>
+                                Research Agent
+                            </div>
+                            <div class="sample-query" onclick="loadSample('sales-agent')">
+                                <i class="fas fa-chart-line"></i>
+                                Sales Agent
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Display -->
+                    <div id="results-display" style="display: none;">
+                        <!-- Execution Summary -->
+                        <div class="result-section">
+                            <h4><i class="fas fa-info-circle"></i> Analysis Summary</h4>
+                            <div id="execution-summary" class="summary-cards">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <!-- Calculated Baselines -->
+                        <div class="result-section">
+                            <h4><i class="fas fa-bullseye"></i> Calculated Baselines</h4>
+                            <div id="baselines-display" class="baselines-grid">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <!-- Insights -->
+                        <div class="result-section">
+                            <h4><i class="fas fa-lightbulb"></i> Key Insights</h4>
+                            <div id="insights-display" class="insights-container">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <!-- Readiness Assessment -->
+                        <div class="result-section">
+                            <h4><i class="fas fa-check-circle"></i> Readiness Assessment</h4>
+                            <div id="readiness-display" class="readiness-grid">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <!-- Export Options -->
+                        <div class="result-section">
+                            <h4><i class="fas fa-download"></i> Export Results</h4>
+                            <div class="export-actions">
+                                <button class="btn btn-secondary" onclick="exportResults('json')">
+                                    <i class="fas fa-file-code"></i>
+                                    Export JSON
+                                </button>
+                                <button class="btn btn-secondary" onclick="exportResults('pdf')">
+                                    <i class="fas fa-file-pdf"></i>
+                                    Export PDF
+                                </button>
+                                <button class="btn btn-secondary" onclick="copyToClipboard()">
+                                    <i class="fas fa-copy"></i>
+                                    Copy Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Error Display -->
+                    <div id="error-display" class="error-display" style="display: none;">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4>Analysis Failed</h4>
+                        <p id="error-message"></p>
+                        <button class="btn btn-primary" onclick="retryAnalysis()">
+                            <i class="fas fa-redo"></i>
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Framework Section -->
+    <section id="framework" class="framework-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Framework Overview
+            </h2>
+            
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h3><i class="fas fa-search"></i> Document Analysis</h3>
+                    <p>Intelligent extraction of agent capabilities, performance targets, and technical constraints from documentation.</p>
+                    <ul>
+                        <li>Complexity assessment</li>
+                        <li>Domain maturity evaluation</li>
+                        <li>Tool ecosystem analysis</li>
+                        <li>Performance target extraction</li>
+                    </ul>
+                </div>
+                
+                <div class="framework-card">
+                    <h3><i class="fas fa-calculator"></i> Baseline Calculation</h3>
+                    <p>Dynamic generation of performance baselines based on context-aware analysis and predefined frameworks.</p>
+                    <ul>
+                        <li>Technical metrics</li>
+                        <li>Operational KPIs</li>
+                        <li>Learning & safety metrics</li>
+                        <li>Business impact measures</li>
+                    </ul>
+                </div>
+                
+                <div class="framework-card">
+                    <h3><i class="fas fa-lightbulb"></i> Insights Generation</h3>
+                    <p>Actionable recommendations and readiness assessments based on comprehensive baseline analysis.</p>
+                    <ul>
+                        <li>Technical insights</li>
+                        <li>Operational recommendations</li>
+                        <li>Business implications</li>
+                        <li>Readiness evaluation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Baseline Categories -->
+            <div class="baseline-categories">
+                <h3>Baseline Categories</h3>
+                <div class="categories-grid">
+                    <div class="category-card" onclick="showCategoryDetails('technical')">
+                        <i class="fas fa-microchip"></i>
+                        <h4>Technical Metrics</h4>
+                        <p>Trajectory complexity, tool utilization</p>
+                    </div>
+                    <div class="category-card" onclick="showCategoryDetails('operational')">
+                        <i class="fas fa-tasks"></i>
+                        <h4>Operational KPIs</h4>
+                        <p>Escalation rates, first contact resolution</p>
+                    </div>
+                    <div class="category-card" onclick="showCategoryDetails('learning')">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h4>Learning & Safety</h4>
+                        <p>Improvement velocity, guardrail compliance</p>
+                    </div>
+                    <div class="category-card" onclick="showCategoryDetails('business')">
+                        <i class="fas fa-chart-pie"></i>
+                        <h4>Business Metrics</h4>
+                        <p>ROI, customer satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section id="api" class="api-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-code"></i>
+                API Integration
+            </h2>
+            
+            <div class="api-grid">
+                <div class="api-card">
+                    <h3>REST Endpoints</h3>
+                    <div class="endpoints">
+                        <div class="endpoint">
+                            <span class="method get">GET</span>
+                            <code>/health</code>
+                            <p>System health check</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <code>/analyze/baseline</code>
+                            <p>Generate baselines (sync)</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <code>/analyze/baseline/async</code>
+                            <p>Generate baselines (async)</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method get">GET</span>
+                            <code>/framework/ranges</code>
+                            <p>Get baseline ranges</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="api-card">
+                    <h3>Example Request</h3>
+                    <div class="code-example">
+                        <pre><code>{
+  "user_query": "Create baselines for customer service agent",
+  "document_content": "Agent handles technical support..."
+}</code></pre>
+                    </div>
+                    <div class="api-actions">
+                        <a href="/docs" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-book"></i>
+                            View Full Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI Control Tower</h4>
+                    <p>Dynamic Baseline Creation for AI Agents</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/docs" target="_blank">API Documentation</a></li>
+                        <li><a href="/redoc" target="_blank">Alternative Docs</a></li>
+                        <li><a href="#framework">Framework Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Built with ❤️ using ReAct agents and LangGraph</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Category Details -->
+    <div id="category-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
