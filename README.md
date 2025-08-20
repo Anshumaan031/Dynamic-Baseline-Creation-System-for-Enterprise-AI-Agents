@@ -2,7 +2,7 @@
 
 ## Overview
 
-The AI Control Tower is a sophisticated ReAct (Reasoning and Acting) agent system that analyzes agent documentation and creates dynamic performance baselines. It processes agent specifications and generates context-aware baseline metrics for performance evaluation, providing customized baseline values based on specific characteristics of each use case.
+A ReAct (Reasoning and Acting) agent system that analyzes agent documentation and creates dynamic performance baselines. It processes agent specifications and generates context-aware baseline metrics for performance evaluation, providing customized baseline values based on specific characteristics of each use case.
 
 ## Key Features
 
